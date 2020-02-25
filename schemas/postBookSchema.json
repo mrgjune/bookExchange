@@ -1,0 +1,86 @@
+{
+    "definitions": {},
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://example.com/root.json",
+    "type": "object",
+    "title": "The Root Schema",
+    "required": [
+        "isbn",
+        "title",
+        "author",
+        "subject_type",
+        "edition_number",
+        "school_handle",
+        "copies"
+    ],
+    "properties": {
+        "isbn": {
+            "$id": "#/properties/isbn",
+            "type": "integer",
+            "title": "The Isbn Schema",
+            "default": 0,
+            "examples": [
+                2344566
+            ]
+        },
+        "title": {
+            "$id": "#/properties/title",
+            "type": "string",
+            "title": "The Title Schema",
+            "default": "",
+            "examples": [
+                "Data Science"
+            ],
+            "pattern": "^(.*)$"
+        },
+        "author": {
+            "$id": "#/properties/author",
+            "type": "string",
+            "title": "The Author Schema",
+            "default": "",
+            "examples": [
+                "Mac"
+            ],
+            "pattern": "^(.*)$"
+        },
+        "subject_type": {
+            "$id": "#/properties/subject_type",
+            "type": "string",
+            "title": "The Subject_type Schema",
+            "default": "",
+            "examples": [
+                "CS"
+            ],
+            "pattern": "^(.*)$"
+        },
+        "edition_number": {
+            "$id": "#/properties/edition_number",
+            "type": "integer",
+            "title": "The Edition_number Schema",
+            "default": 0,
+            "examples": [
+                3
+            ]
+        },
+        "school_handle": {
+            "$id": "#/properties/school_handle",
+            "type": "string",
+            "title": "The School_handle Schema",
+            "default": "",
+            "examples": [
+                "skid"
+            ],
+            "pattern": "^(.*)$"
+        },
+        "copies": {
+            "$id": "#/properties/copies",
+            "type": "integer",
+            "title": "The copies Schema",
+            "default": 1,
+            "examples": [
+                1
+            ],
+            "pattern": "^(.*)$"
+        }
+    }
+}
