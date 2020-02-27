@@ -90,45 +90,82 @@ describe("Model", function () {
                     undefined
                 );
             })
+        //TEST ERROR TEST
     });
+
+
+
+    describe("updatedBook()", function () {
+        // test("should return updatedBook",
+        //     async function () {
+        //         let result = await Book.update(45435345, { "checked_out": "testusername1" });
+        //         console.log(result)
+        //         expect(result).toEqual(
+        //             {
+        //                 isbn: 45435345,
+        //                 title: "math ",
+        //                 author: "Merk",
+        //                 subject_type: "CS",
+        //                 edition_number: 3,
+        //                 school_handle: "skid",
+        //                 copies: 1,
+        //                 checked_out: "testusername2"
+        //             }
+        //         );
+        //     })
+        // test("should return there exist no user",
+        //     async function () {
+        //         let result = await User.update("testudername1", { "email": "updatedEmail@gmail.com" })
+        //         console.log(response.statusCode, "statuscode");
+        //         await expect(throws()).rejects.toThrow(new ExpressError(`There exists no user ${testudername1}`));
+
+
+    })
+
+    describe("search()", function () {
+
+        // test("should return the books checked out to a user ", async function () {
+        //     let result = await Book.search({ "checked_out": "testusername2" })
+        //     expect(result).toEqual(
+        //     )
+        // });
+        test("should return the books by this author ", async function () {
+            let result = await Book.search({ "author": "Mcflair" })
+            expect(result).toEqual(
+                [{ "author": "Mcflair", "available": true, "checked_out": null, "copies": 1, "edition_number": 3, "isbn": 45435345, "school_handle": "skid", "subject_type": "Chem", "title": "Chemistry" }]
+            )
+        });
+        test("should return the books in this school ", async function () {
+            let result = await Book.search({ "school_handle": "skid" })
+            expect(result).toEqual(
+                [{
+                    "author": "Mcflair", "available": true, "checked_out": null, "copies": 1, "edition_number": 3,
+                    "isbn": 45435345, "school_handle": "skid", "subject_type": "Chem", "title": "Chemistry"
+                },
+                {
+                    "author": "Mac", "available": true, "checked_out": null, "copies": 1, "edition_number": 3,
+                    "isbn": 2344566, "school_handle": "skid", "subject_type": "CS", "title": "Data Science"
+                }]
+            )
+        });
+        test("should return the books by subject ", async function () {
+            let result = await Book.search({ "subject_type": "Chem" })
+            expect(result).toEqual(
+                [{ "author": "Mcflair", "available": true, "checked_out": null, "copies": 1, "edition_number": 3, "isbn": 45435345, "school_handle": "skid", "subject_type": "Chem", "title": "Chemistry" }]
+            )
+        });
+        test("should return the books by title ", async function () {
+            let result = await Book.search({ "title": "Data Science" })
+            expect(result).toEqual(
+                [{ "author": "Mac", "available": true, "checked_out": null, "copies": 1, "edition_number": 3, "isbn": 2344566, "school_handle": "skid", "subject_type": "CS", "title": "Data Science" }]
+            )
+        });
+
+
+    });
+
 
     afterAll(async function () {
         await db.end()
     })
 });
-
-    // describe("updatedBook()", function () {
-    //     test("should return updatedBook",
-    //         async function () {
-    //             let result = await Book.update(45435345, { "checked_out": "testusername2" })
-    //             expect(result).toEqual(
-    //                 {
-    //                     isbn: 45435345,
-    //                     title: "math ",
-    //                     author: "Merk",
-    //                     subject_type: "CS",
-    //                     edition_number: 3,
-    //                     school_handle: "skid",
-    //                     copies: 1,
-    //                     checked_out: "testusername1"
-    //                 }
-    //             );
-    //         })
-    // test("should return there exist no user",
-    //     async function () {
-    //         let result = await User.update("testudername1", { "email": "updatedEmail@gmail.com" })
-    //         console.log(response.statusCode, "statuscode");
-    //         await expect(throws()).rejects.toThrow(new ExpressError(`There exists no user ${testudername1}`));
-
-
-    //     })
-
-    // describe("getUserBook()", function () {
-
-    //     test("should return the books checked out to a user ", async function () {
-    //         let result = await Book.getUserBooks("testusername1")
-    //         expect(result).toEqual(
-    //         )
-    //     });
-    // });
-

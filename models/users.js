@@ -91,7 +91,6 @@ class User {
         //   data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
         // }
         let { query, values } = partialUpdate("users", data, "username", username);
-
         const result = await db.query(query, values);
         const user = result.rows[0];
         if (!user) {

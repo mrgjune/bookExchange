@@ -33,15 +33,77 @@ class Book {
         )
         return result.rows[0];
     }
-    /**get books checked out to certain user */
-    static async getUserBooks(user) {
-        let result = await db.query(
-            `SELECT isbn, title, author, subject_type,edition_number,school_handle,copies,available,school_handle,copies,checked_out
+    /**get books checked out by either user, school,author, subject or title*/
+    static async search(searchObject) {
+        let queryParam = Object.keys(searchObject)[0];
+        let searchTerm = searchObject[queryParam];
+        if (queryParam === 'checked_out') {
+            let result = await db.query(
+                `SELECT isbn, title, author, subject_type,edition_number,school_handle,copies,available,school_handle,copies,checked_out
                 FROM books
-                WHERE checked_out = $1`,
-            [user]
-        )
-        return result.rows;
+                WHERE checked_out= $1`,
+                [searchTerm]
+            );
+
+            return result.rows;
+        }
+        else if (queryParam === 'school_handle') {
+            let result = await db.query(
+                `SELECT isbn, title, author, subject_type,edition_number,school_handle,copies,available,school_handle,copies,checked_out
+                FROM books
+                WHERE school_handle= $1`,
+                [searchTerm]
+            );
+            if (result.rows.length === 0) {
+                throw new ExpressError(`Invalid School handle'${searchTerm}'`, 404);
+            }
+
+
+            return result.rows;
+
+        }
+        else if (queryParam === 'author') {
+            let result = await db.query(
+                `SELECT isbn, title, author, subject_type,edition_number,school_handle,copies,available,school_handle,copies,checked_out
+                FROM books
+                WHERE author= $1`,
+                [searchTerm]
+            );
+            if (result.rows.length === 0) {
+                throw new ExpressError(`No books by this author: '${searchTerm}'`, 404);
+            }
+
+            return result.rows;
+
+        }
+        else if (queryParam === 'subject_type') {
+            let result = await db.query(
+                `SELECT isbn, title, author, subject_type,edition_number,school_handle,copies,available,school_handle,copies,checked_out
+                FROM books
+                WHERE subject_type= $1`,
+                [searchTerm]
+            );
+            if (result.rows.length === 0) {
+                throw new ExpressError(`No books in this suject: '${searchTerm}'`, 404);
+            }
+
+            return result.rows;
+
+        }
+        else if (queryParam === 'title') {
+            let result = await db.query(
+                `SELECT isbn, title, author, subject_type,edition_number,school_handle,copies,available,school_handle,copies,checked_out
+                FROM books
+                WHERE title= $1`,
+                [searchTerm]
+            );
+            if (result.rows.length === 0) {
+                throw new ExpressError(`No books by the title: '${searchTerm}'`, 404);
+            }
+
+            return result.rows;
+
+        }
     }
     static async update(isbn, data) {
         let { query, values } = partialUpdate("books", data, "isbn", isbn);
@@ -50,7 +112,7 @@ class Book {
         if (!book) {
             throw new ExpressError(`There exists no book '${isbn}'`, 404);
         }
-        return result.rows[0];
+        return result.rows;
     }
     /** Delete given book from database; returns undefined. */
 

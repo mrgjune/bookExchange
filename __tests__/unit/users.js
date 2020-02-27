@@ -42,6 +42,26 @@ describe("Model", function () {
                 username: "mrgjune"
             })
         });
+        //TEST USER ALREAYD EXIST ERROR
+    });
+
+    describe("authenicate()", function () {
+        test("should return ..", async function () {
+            let result = await User.authenticate({
+                username: "testusername2",
+                password: "password"
+            })
+            expect(result).toEqual({
+                email: "test2@gmail.com",
+                first_name: "testName",
+                is_admin: false,
+                last_name: "testlastname",
+                password: expect.anything(),
+                school_handle: "skid",
+                username: "testusername2"
+            })
+        })
+        //TEST THROW NEW EXPRESS ERROR
     });
 
     describe("get()", function () {
@@ -68,7 +88,8 @@ describe("Model", function () {
             async function () {
                 let result = await User.getAll()
                 expect(result).toEqual(
-                    [{ "email": "test@gmail.com", "first_name": "testName", "last_name": "testlastname", "school_handle": "skid", "username": "testusername1" }, { "email": "test2@gmail.com", "first_name": "testName", "last_name": "testlastname", "school_handle": "skid", "username": "testusername2" }]
+                    [{ "email": "test@gmail.com", "first_name": "testName", "last_name": "testlastname", "school_handle": "skid", "username": "testusername1" },
+                    { "email": "test2@gmail.com", "first_name": "testName", "last_name": "testlastname", "school_handle": "skid", "username": "testusername2" }]
 
                 );
             })
@@ -91,11 +112,11 @@ describe("Model", function () {
                     }
                 );
             })
-        // test("should return there exist no user",
+        // !!!!test("should return there exist no user",
         //     async function () {
         //         let result = await User.update("testudername1", { "email": "updatedEmail@gmail.com" })
-        //         console.log(response.statusCode, "statuscode");
-        //         await expect(throws()).rejects.toThrow(new ExpressError(`There exists no user ${testudername1}`));
+        //         console.log(result, "result")
+        //         await expect(result).catch(new ExpressError("sfs"));
 
 
         //     })
@@ -108,6 +129,7 @@ describe("Model", function () {
                     undefined
                 );
             })
+        //TEST there exist no user
     });
 
 

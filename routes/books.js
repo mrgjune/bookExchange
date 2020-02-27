@@ -25,16 +25,12 @@ router.post("/", adminRequired, async function (req, res, next) {
     }
 })
 /** GET/books/return JSON of {books: [ book:{book details},..]
- * or get books from user
+ * or return books by the serach param
 */
 router.get("/", async function (req, res, next) {
-    //turn into json object
-    let username = req.query.user;
-    let school = req.query.school;
-    let subject = req.query.subject;
-    let author = req.query.subject;
+    let searchObject = req.query;
 
-    if (!username | !school | !subect | !author) {
+    if (Object.keys(searchObject).length == 0) {
         try {
 
             let books = await Book.getAll();
@@ -44,23 +40,24 @@ router.get("/", async function (req, res, next) {
             return next(err)
         }
     }
-    else if (username) {
+
+    else {
+
         try {
 
-            let books = await Book.getUserBooks(username)
+            let books = await Book.search(searchObject)
             if (books.length !== 0) {
                 return res.json({ books })
             }
-            throw new ExpressError("No books checked out", 400);
+            throw new ExpressError("No books matching this search field", 400);
 
         } catch (err) {
             return next(err)
         }
-
     }
 
-})
 
+})
 
 /** GET/books/[title], return JSON of {book: book details} */
 router.get("/:isbn", async function (req, res, next) {
@@ -72,7 +69,7 @@ router.get("/:isbn", async function (req, res, next) {
             return res.json({ book })
         }
 
-        throw new ExpressError("User Not Found", 404);
+        throw new ExpressError("Book Not Found", 404);
 
 
     } catch (err) {
@@ -86,7 +83,7 @@ router.patch("/:isbn", async function (req, res, next) {
     try {
         if ('isbn' in req.body) {
             throw new ExpressError(
-                'You are not allowed to change username or is_admin properties.',
+                'You are not allowed to change the isbn.',
                 400);
         }
         const book = await Book.update(req.params.isbn, req.body);

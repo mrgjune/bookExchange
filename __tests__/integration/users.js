@@ -1,4 +1,4 @@
-/** Test for companies */
+/** Test for Users */
 
 const request = require("supertest");
 const app = require("../../app");
@@ -26,25 +26,37 @@ afterAll(async function () {
 
 
 
-
-
 describe("GET /users", function () {
 
-    test("It should respond with {users data}", async function () {
+
+    test("Creates a new user", async function () {
+        let dataObj = {
+            username: "testUser",
+            first_name: "test",
+            password: "password",
+            last_name: "testlast",
+            email: "test@gmail.com",
+            school_handle: "skid"
+        };
         const response = await request(app)
-            .get("/users")
-            .send({ _token: `${TEST_DATA.userToken}` });
-        console.log(response.body, "RESPONSE .BODY")
-        expect(response.body.company.handle).toEqual("testHandle");
-
-    })
-
-    test("It should return 404 for no-such-comp", async function () {
-        const response = await request(app)
-            .get("/companies/blargh");
-        expect(response.statusCode).toEqual(404);
-
+            .post("/users")
+            .send(dataObj);
+        expect(response.statusCode).toBe(200);
+        const result = await User.getUser("testUser");
+        expect(result).toEqual({
+            first_name: 'test',
+            last_name: 'testlast',
+            email: 'test@gmail.com',
+            school_handle: 'skid'
+        })
     });
+
+    //     test("It should return 404 for no-such-comp", async function () {
+    //         const response = await request(app)
+    //             .get("/companies/blargh");
+    //         expect(response.statusCode).toEqual(404);
+
+    //     });
 });
 
 // describe("GET /query params", function () {

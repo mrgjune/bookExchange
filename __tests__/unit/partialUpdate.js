@@ -16,4 +16,19 @@ describe("partialUpdate()", () => {
 
         expect(values).toEqual(["Test", "testuser"]);
     });
+    it("should delete items if they start with _", function () {
+        const { query, values } = sqlForPartialUpdate(
+            "users",
+            { _first_name: "Test" },
+            "username",
+            "testuser"
+        );
+
+        expect(query).toEqual(
+            "UPDATE users SET  WHERE username=$1 RETURNING *"
+
+        );
+
+        expect(values).toEqual(["testuser"]);
+    });
 });
