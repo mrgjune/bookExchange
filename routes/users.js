@@ -37,7 +37,7 @@ router.get("/", adminRequired, async function (req, res, next) {
 
 })
 /** GET/users/[userame], return JSON of {user: user details} */
-router.get("/:username", ensureCorrectUser, async function (req, res, next) {
+router.get("/:username", authRequired, async function (req, res, next) {
     let username = req.params.username;
     try {
         let user = await User.getUser(username);
@@ -63,6 +63,7 @@ router.patch("/:username", ensureCorrectUser, async function (req, res, next) {
                 400);
         }
         const user = await User.update(req.params.username, req.body);
+
         return res.json({ user });
     } catch (err) {
         return next(err);

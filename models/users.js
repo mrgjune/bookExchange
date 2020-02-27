@@ -45,7 +45,7 @@ class User {
         if (duplicateCheck.rows[0]) {
             throw new ExpressError(
                 `There already exists a user with username '${data.username}`,
-                400
+                409
             );
         }
 
@@ -78,7 +78,7 @@ class User {
     /**get one user */
     static async getUser(username) {
         let result = await db.query(
-            `SELECT first_name, last_name, email, school_handle
+            `SELECT username,first_name, last_name, email, school_handle
                 FROM users
                 WHERE username = $1`,
             [username]
@@ -87,15 +87,17 @@ class User {
     }
     /**update user info by username */
     static async update(username, data) {
-        // if (data.password) {
-        //   data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
-        // }
+        if (data.password) {
+            data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
+        }
         let { query, values } = partialUpdate("users", data, "username", username);
         const result = await db.query(query, values);
         const user = result.rows[0];
         if (!user) {
             throw new ExpressError(`There exists no user '${username}'`, 404);
         }
+        delete user.password;
+        delete user.is_admin;
 
         //delete user.password;
         // delete user.is_admin;

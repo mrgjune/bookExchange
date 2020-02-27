@@ -22,7 +22,7 @@ async function beforeEachHook(TEST_DATA) {
         const hashedPassword = await bcrypt.hash('secret', 1);
         await db.query(
             `INSERT INTO users (username, password, first_name, last_name, email,school_handle, is_admin)
-                  VALUES ('test', $1, 'tester', 'mctest', 'test@rithmschool.com','skid', true)`,
+                  VALUES ('test', $1, 'tester', 'mctest', 'test@test.com','skid', true)`,
             [hashedPassword]
         );
 

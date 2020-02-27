@@ -13,14 +13,14 @@ describe("Model", function () {
             email: "test@gmail.com",
             school_handle: "skid"
         })
-        await User.register({
-            username: "testusername2",
-            password: "password",
-            first_name: "testName",
-            last_name: "testlastname",
-            email: "test2@gmail.com",
-            school_handle: "skid"
-        })
+        // await User.register({
+        //     username: "testusername2",
+        //     password: "password",
+        //     first_name: "testName",
+        //     last_name: "testlastname",
+        //     email: "test2@gmail.com",
+        //     school_handle: "skid"
+        // })
     })
     describe("register()", function () {
 
@@ -48,17 +48,17 @@ describe("Model", function () {
     describe("authenicate()", function () {
         test("should return ..", async function () {
             let result = await User.authenticate({
-                username: "testusername2",
+                username: "testusername1",
                 password: "password"
             })
             expect(result).toEqual({
-                email: "test2@gmail.com",
-                first_name: "testName",
-                is_admin: false,
-                last_name: "testlastname",
-                password: expect.anything(),
-                school_handle: "skid",
-                username: "testusername2"
+                "email": "test@gmail.com",
+                "first_name": "testName",
+                "is_admin": false,
+                "last_name": "testlastname",
+                "password": expect.anything(),
+                "school_handle": "skid",
+                "username": "testusername1"
             })
         })
         //TEST THROW NEW EXPRESS ERROR
@@ -72,7 +72,8 @@ describe("Model", function () {
                     email: "test@gmail.com",
                     first_name: "testName",
                     last_name: "testlastname",
-                    school_handle: "skid"
+                    school_handle: "skid",
+                    username: "testusername1"
                 });
             })
 
@@ -88,13 +89,11 @@ describe("Model", function () {
             async function () {
                 let result = await User.getAll()
                 expect(result).toEqual(
-                    [{ "email": "test@gmail.com", "first_name": "testName", "last_name": "testlastname", "school_handle": "skid", "username": "testusername1" },
-                    { "email": "test2@gmail.com", "first_name": "testName", "last_name": "testlastname", "school_handle": "skid", "username": "testusername2" }]
+                    [{ "email": "test@gmail.com", "first_name": "testName", "last_name": "testlastname", "school_handle": "skid", "username": "testusername1" }]
 
                 );
             })
     });
-
 
     describe("updateUser()", function () {
         test("should return updatedUser",
@@ -104,9 +103,7 @@ describe("Model", function () {
                     {
                         email: "updatedEmail@gmail.com",
                         first_name: "testName",
-                        is_admin: false,
                         last_name: "testlastname",
-                        "password": expect.anything(),
                         school_handle: "skid",
                         username: "testusername1"
                     }
