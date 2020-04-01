@@ -96,23 +96,27 @@ describe("Model", function () {
 
 
     describe("updatedBook()", function () {
-        // test("should return updatedBook",
-        //     async function () {
-        //         let result = await Book.update(45435345, { "checked_out": "testusername1" });
-        //         console.log(result)
-        //         expect(result).toEqual(
-        //             {
-        //                 isbn: 45435345,
-        //                 title: "math ",
-        //                 author: "Merk",
-        //                 subject_type: "CS",
-        //                 edition_number: 3,
-        //                 school_handle: "skid",
-        //                 copies: 1,
-        //                 checked_out: "testusername2"
-        //             }
-        //         );
-        //     })
+        test("should return updatedBook",
+            async function () {
+                let result = await Book.update(45435345, { "title": "science" });
+                expect(result).toEqual(
+
+                    [{
+                        "author":
+                            "Mcflair",
+                        "available": true,
+                        "checked_out": null,
+                        "checked_out_date": null,
+                        "copies": 1, "due_date": null,
+                        "edition_number": 3,
+                        "isbn": 45435345,
+                        "school_handle": "skid",
+                        "subject_type": "Chem",
+                        "title": "science"
+                    }]
+
+                );
+            })
         // test("should return there exist no user",
         //     async function () {
         //         let result = await User.update("testudername1", { "email": "updatedEmail@gmail.com" })

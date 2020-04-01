@@ -29,7 +29,7 @@ router.post("/", adminRequired, async function (req, res, next) {
 */
 router.get("/", async function (req, res, next) {
     let searchObject = req.query;
-
+    console.log(searchObject, "Sdfds")
     if (Object.keys(searchObject).length == 0) {
         try {
 
@@ -46,10 +46,10 @@ router.get("/", async function (req, res, next) {
         try {
 
             let books = await Book.search(searchObject)
-            if (books.length !== 0) {
-                return res.json({ books })
-            }
-            throw new ExpressError("No books matching this search field", 400);
+
+            return res.json({ books })
+
+            // throw new ExpressError("No books matching this search field", 400);
 
         } catch (err) {
             return next(err)

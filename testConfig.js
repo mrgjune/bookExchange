@@ -4,32 +4,36 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 // app imports
-const app = require('../../app');
-const db = require('../../db');
+const app = require('./app');
+const db = require('./db');
 
 // global auth variable to store things for all the tests
 const TEST_DATA = {};
+let nextUser = 0;
 
 /**
  * Hooks to insert a user, company, and job, and to authenticate
  *  the user and the company for respective tokens that are stored
  *  in the input `testData` parameter.
  * @param {Object} TEST_DATA - build the TEST_DATA object
+ * 
  */
 async function beforeEachHook(TEST_DATA) {
     try {
+        let user = "test" + nextUser;
+        nextUser++;
         // login a user, get a token, store the user ID and token
         const hashedPassword = await bcrypt.hash('secret', 1);
         await db.query(
             `INSERT INTO users (username, password, first_name, last_name, email,school_handle, is_admin)
-                  VALUES ('test', $1, 'tester', 'mctest', 'test@test.com','skid', true)`,
+                  VALUES (${user}, $1, 'tester', 'mctest', 'test@test.com','skid', true)`,
             [hashedPassword]
         );
 
         const response = await request(app)
             .post('/login')
             .send({
-                username: 'test',
+                username: user,
                 password: 'secret'
             });
 
@@ -44,8 +48,10 @@ async function beforeEachHook(TEST_DATA) {
 }
 
 async function afterEachHook() {
+    console.log("AFTER EACH HOOK")
     try {
         await db.query('DELETE FROM users');
+        await db.query('DELETE FROM books');
     } catch (error) {
         console.error(error);
     }

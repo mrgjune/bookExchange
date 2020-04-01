@@ -90,7 +90,6 @@ describe("Model", function () {
                 let result = await User.getAll()
                 expect(result).toEqual(
                     [{ "email": "test@gmail.com", "first_name": "testName", "last_name": "testlastname", "school_handle": "skid", "username": "testusername1" }]
-
                 );
             })
     });

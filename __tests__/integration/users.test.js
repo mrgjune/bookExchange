@@ -9,7 +9,7 @@ const {
     afterEachHook,
     afterAllHook,
     beforeEachHook
-} = require('./config');
+} = require("../../testConfig");
 
 beforeEach(async function () {
     await beforeEachHook(TEST_DATA);
@@ -189,12 +189,4 @@ describe("DELETE /users/:username", function () {
         expect(response.statusCode).toBe(404);
     });
 });
-
-
-
-
-afterAll(async function () {
-    await db.end()
-})
-
 

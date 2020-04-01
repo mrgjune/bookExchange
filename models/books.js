@@ -35,6 +35,7 @@ class Book {
     }
     /**get books checked out by either user, school,author, subject or title*/
     static async search(searchObject) {
+        console.log(searchObject, "MODEL")
         let queryParam = Object.keys(searchObject)[0];
         let searchTerm = searchObject[queryParam];
         if (queryParam === 'checked_out') {
@@ -69,23 +70,18 @@ class Book {
                 WHERE author= $1`,
                 [searchTerm]
             );
-            if (result.rows.length === 0) {
-                throw new ExpressError(`No books by this author: '${searchTerm}'`, 404);
-            }
 
             return result.rows;
 
         }
-        else if (queryParam === 'subject_type') {
+        else if (queryParam === 'subject') {
             let result = await db.query(
                 `SELECT isbn, title, author, subject_type,edition_number,school_handle,copies,available,school_handle,copies,checked_out
                 FROM books
                 WHERE subject_type= $1`,
                 [searchTerm]
             );
-            if (result.rows.length === 0) {
-                throw new ExpressError(`No books in this suject: '${searchTerm}'`, 404);
-            }
+
 
             return result.rows;
 
@@ -97,9 +93,7 @@ class Book {
                 WHERE title= $1`,
                 [searchTerm]
             );
-            if (result.rows.length === 0) {
-                throw new ExpressError(`No books by the title: '${searchTerm}'`, 404);
-            }
+
 
             return result.rows;
 
