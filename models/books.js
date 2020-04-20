@@ -26,7 +26,8 @@ class Book {
   /**get all books */
   static async getAll() {
     let result = await db.query(
-      `SELECT isbn, title, author, subject_type,edition_number,school_handle,copies,available,school_handle,copies
+      `SELECT isbn,book_image,title,author,description,subject_type,edition_number,publisher,copyright_year,language,
+      available,school_handle,copies
             FROM books`
     );
     return result.rows;
@@ -34,7 +35,8 @@ class Book {
   /**get one book */
   static async get(isbn) {
     let result = await db.query(
-      `SELECT isbn, title, author, subject_type,edition_number,school_handle,copies,available,school_handle,copies
+      `SELECT isbn,book_image,title,author,description,subject_type,edition_number,publisher,copyright_year,language,
+      available,school_handle,copies
                 FROM books
                 WHERE isbn = $1`,
       [isbn]
@@ -48,7 +50,8 @@ class Book {
     let searchTerm = searchObject[queryParam];
     if (queryParam === "checked_out") {
       let result = await db.query(
-        `SELECT isbn, title, author, subject_type,edition_number,school_handle,copies,available,school_handle,copies,checked_out
+        `SELECT isbn,book_image,title,author,description,subject_type,edition_number,publisher,copyright_year,language,
+        available,school_handle,copies
                 FROM books
                 WHERE checked_out= $1`,
         [searchTerm]
@@ -57,7 +60,8 @@ class Book {
       return result.rows;
     } else if (queryParam === "school_handle") {
       let result = await db.query(
-        `SELECT isbn, title, author, subject_type,edition_number,school_handle,copies,available,school_handle,copies,checked_out
+        `SELECT isbn,book_image,title,author,description,subject_type,edition_number,publisher,copyright_year,language,
+        available,school_handle,copies
                 FROM books
                 WHERE school_handle= $1`,
         [searchTerm]
@@ -69,8 +73,9 @@ class Book {
       return result.rows;
     } else if (queryParam === "author") {
       let result = await db.query(
-        `SELECT isbn, title, author, subject_type,edition_number,school_handle,copies,available,school_handle,copies,checked_out
-                FROM books
+        `SELECT isbn,book_image,title,author,description,subject_type,edition_number,publisher,copyright_year,language,
+        available,school_handle,copies 
+              FROM books
                 WHERE author ILIKE $1`,
         [`%${searchTerm}%`]
       );
@@ -78,7 +83,8 @@ class Book {
       return result.rows;
     } else if (queryParam === "subject") {
       let result = await db.query(
-        `SELECT isbn, title, author, subject_type,edition_number,school_handle,copies,available,school_handle,copies,checked_out
+        `SELECT isbn,book_image,title,author,description,subject_type,edition_number,publisher,copyright_year,language,
+        available,school_handle,copies
                 FROM books
                 WHERE subject_type = $1`,
         [searchTerm]
@@ -87,7 +93,8 @@ class Book {
       return result.rows;
     } else if (queryParam === "title") {
       let result = await db.query(
-        `SELECT isbn, title, author, subject_type,edition_number,school_handle,copies,available,school_handle,copies,checked_out
+        `SELECT isbn,book_image,title,author,description,subject_type,edition_number,publisher,copyright_year,language,
+        available,school_handle,copies
                 FROM books
                 WHERE title ILIKE $1`,
         [`%${searchTerm}%`]
