@@ -45,61 +45,71 @@ class Book {
   }
   /**get books checked out by either user, school,author, subject or title*/
   static async search(searchObject) {
-    console.log(searchObject, "MODEL");
-    let queryParam = Object.keys(searchObject)[0];
-    let searchTerm = searchObject[queryParam];
-    if (queryParam === "checked_out") {
+    console.log(searchObject), "search";
+    if (Object.keys(searchObject).length === 1 && searchObject.school_handle) {
       let result = await db.query(
         `SELECT isbn,book_image,title,author,description,subject_type,edition_number,publisher,copyright_year,language,
-        available,school_handle,copies
-                FROM books
-                WHERE checked_out= $1`,
-        [searchTerm]
+          available,school_handle,copies from books
+                `
       );
-
+      console.log(result.rows);
       return result.rows;
-    } else if (queryParam === "school_handle") {
-      let result = await db.query(
-        `SELECT isbn,book_image,title,author,description,subject_type,edition_number,publisher,copyright_year,language,
-        available,school_handle,copies
+    }
+    if (searchObject.school_handle === "All Schools") {
+      if (searchObject.author) {
+        let result = await db.query(
+          `SELECT isbn,book_image,title,author,description,subject_type,edition_number,publisher,copyright_year,language,
+          available,school_handle,copies 
                 FROM books
-                WHERE school_handle= $1`,
-        [searchTerm]
-      );
-      if (result.rows.length === 0) {
-        throw new ExpressError(`Invalid School handle'${searchTerm}'`, 404);
+                  WHERE author ILIKE $1`,
+          [searchObject.author]
+        );
+        return result.rows;
+      } else if (searchObject.title) {
+        let result = await db.query(
+          `SELECT isbn,book_image,title,author,description,subject_type,edition_number,publisher,copyright_year,language,
+          available,school_handle,copies 
+                FROM books
+                WHERE title ILIKE $1`,
+          [searchObject.title]
+        );
+        return result.rows;
+      } else if (searchObject.subject) {
+        let result = await db.query(
+          `SELECT isbn,book_image,title,author,description,subject_type,edition_number,publisher,copyright_year,language,
+          available,school_handle,copies 
+                FROM books
+                WHERE subject_type = $1 `,
+          [searchObject.subject]
+        );
+        return result.rows;
       }
-
-      return result.rows;
-    } else if (queryParam === "author") {
+    } else if (searchObject.author) {
       let result = await db.query(
         `SELECT isbn,book_image,title,author,description,subject_type,edition_number,publisher,copyright_year,language,
         available,school_handle,copies 
               FROM books
-                WHERE author ILIKE $1`,
-        [`%${searchTerm}%`]
+                WHERE author ILIKE $1 AND school_handle = $2`,
+        [searchObject.author, searchObject.school_handle]
       );
-
       return result.rows;
-    } else if (queryParam === "subject") {
+    } else if (searchObject.title) {
       let result = await db.query(
         `SELECT isbn,book_image,title,author,description,subject_type,edition_number,publisher,copyright_year,language,
-        available,school_handle,copies
-                FROM books
-                WHERE subject_type = $1`,
-        [searchTerm]
+        available,school_handle,copies 
+              FROM books
+              WHERE title ILIKE $1 AND school_handle = $2`,
+        [searchObject.title, searchObject.school_handle]
       );
-
       return result.rows;
-    } else if (queryParam === "title") {
+    } else if (searchObject.subject) {
       let result = await db.query(
         `SELECT isbn,book_image,title,author,description,subject_type,edition_number,publisher,copyright_year,language,
-        available,school_handle,copies
-                FROM books
-                WHERE title ILIKE $1`,
-        [`%${searchTerm}%`]
+        available,school_handle,copies 
+              FROM books
+              WHERE subject_type = $1 AND school_handle = $2`,
+        [searchObject.subject, searchObject.school_handle]
       );
-
       return result.rows;
     }
   }
