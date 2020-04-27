@@ -45,15 +45,23 @@ class Book {
   }
   /**get books checked out by either user, school,author, subject or title*/
   static async search(searchObject) {
-    console.log(searchObject), "search";
     if (Object.keys(searchObject).length === 1 && searchObject.school_handle) {
-      let result = await db.query(
-        `SELECT isbn,book_image,title,author,description,subject_type,edition_number,publisher,copyright_year,language,
-          available,school_handle,copies from books
-                `
-      );
-      console.log(result.rows);
-      return result.rows;
+      if (searchObject.school_handle === "All Schools") {
+        let result = await db.query(
+          `SELECT isbn,book_image,title,author,description,subject_type,edition_number,publisher,copyright_year,language,
+          available,school_handle,copies from books`
+        );
+
+        return result.rows;
+      } else {
+        let result = await db.query(
+          `SELECT isbn,book_image,title,author,description,subject_type,edition_number,publisher,copyright_year,language,
+          available,school_handle,copies from books 
+            Where school_handle = $1`,
+          [searchObject.school_handle]
+        );
+        return result.rows;
+      }
     }
     if (searchObject.school_handle === "All Schools") {
       if (searchObject.author) {
