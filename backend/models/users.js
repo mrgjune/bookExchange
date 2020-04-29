@@ -1,6 +1,6 @@
 const db = require("../db");
-const ExpressError = require("helpers/ExpressError");
-const partialUpdate = require("helpers/partialUpdate");
+const ExpressError = require("../helpers/expressError");
+const partialUpdate = require("../helpers/partialUpdate");
 const bcrypt = require("bcrypt");
 const BCRYPT_WORK_FACTOR = 10;
 
