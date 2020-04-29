@@ -1,8 +1,5 @@
 const db = require("../db");
 
-const ExpressError = require("../helpers/ExpressError");
-const partialUpdate = require("../helpers/partialUpdate");
-
 class Request {
   static async requestForm(data) {
     const result = await db.query(

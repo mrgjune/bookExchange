@@ -1,6 +1,6 @@
 const db = require("../db");
-const ExpressError = require("../helpers/ExpressError");
-const partialUpdate = require("../helpers/partialUpdate");
+const ExpressError = require("helpers/ExpressError");
+const partialUpdate = require("helpers/partialUpdate");
 
 class Book {
   /**insert a book into books table */
