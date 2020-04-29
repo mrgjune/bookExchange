@@ -17,6 +17,16 @@ CREATE TABLE users(
     is_admin BOOLEAN NOT NULL default FALSE
 );
 
+create TABLE bookRequest(
+    id serial primary Key,
+    first_name TEXT,
+    last_name TEXT,
+    email TEXT,
+    school_handle TEXT NOT NULL REFERENCES schools ON DELETE CASCADE,
+    isbn Float REFERENCES books ON DELETE CASCADE
+
+);
+
 
 CREATE TABLE books(
     isbn Float PRIMARY KEY,
@@ -46,6 +56,8 @@ INSERT INTO schools(school_handle,school_name) VALUES
 INSERT INTO users(username,password,first_name,last_name,email,school_handle,is_admin)VALUES
 ('mrgjune','password','Mara','Greene','mgreene@skidmore.edu','skid',TRUE),
 ('cthomps','password','Clara','Thompson','cthomps@skidmore.edu','ham',FALSE);
+
+
 
 INSERT INTO books(isbn,book_image,
 title,author,description,

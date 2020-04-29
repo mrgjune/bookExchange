@@ -8,46 +8,42 @@ const morgan = require("morgan");
 
 const app = express();
 
-
-
 // add logging system
 app.use(morgan("tiny"));
 
 // allow json body parsing
 app.use(express.json());
 
-
 //routes
 const userRoutes = require("./routes/users");
+const requestRoutes = require("./routes/requests");
 const bookRoutes = require("./routes/books");
-const authRoutes = require('./routes/auth');
+const authRoutes = require("./routes/auth");
 
 app.use("/users", userRoutes);
+app.use("/requests", requestRoutes);
 app.use("/books", bookRoutes);
-app.use('/', authRoutes);
-
-
+app.use("/", authRoutes);
 
 /** 404 handler */
 
 app.use(function (req, res, next) {
+  const err = new ExpressError("Not Found", 404);
 
-    const err = new ExpressError("Not Found", 404);
-
-    // pass the error to the next piece of middleware
-    return next(err);
+  // pass the error to the next piece of middleware
+  return next(err);
 });
 
 /** general error handler */
 
 app.use(function (err, req, res, next) {
-    res.status(err.status || 500);
-    console.error(err.stack);
+  res.status(err.status || 500);
+  console.error(err.stack);
 
-    return res.json({
-        status: err.status,
-        message: err.message
-    });
+  return res.json({
+    status: err.status,
+    message: err.message,
+  });
 });
 
 module.exports = app;

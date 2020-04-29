@@ -7,7 +7,7 @@ const jsonschema = require("jsonschema");
 const postBookSchema = require("../schemas/postBookSchema");
 const { adminRequired } = require("../middleware/auth");
 
-// /** POST/books, return JSON of {books: book} */
+/** POST/books, return JSON of {books: book} */
 router.post("/", adminRequired, async function (req, res, next) {
   try {
     const result = jsonschema.validate(req.body, postBookSchema);
@@ -24,6 +24,7 @@ router.post("/", adminRequired, async function (req, res, next) {
     return next(err);
   }
 });
+
 /** GET/books/return JSON of {books: [ book:{book details},..]
  * or return books by the serach param
  */

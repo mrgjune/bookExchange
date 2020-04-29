@@ -83,6 +83,7 @@ class Book {
         );
         return result.rows;
       } else if (searchObject.subject) {
+        console.log("hello");
         let result = await db.query(
           `SELECT isbn,book_image,title,author,description,subject_type,edition_number,publisher,copyright_year,language,
           available,school_handle,copies 
@@ -121,6 +122,7 @@ class Book {
       return result.rows;
     }
   }
+
   static async update(isbn, data) {
     let { query, values } = partialUpdate("books", data, "isbn", isbn);
     const result = await db.query(query, values);
